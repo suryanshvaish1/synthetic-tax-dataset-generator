@@ -1,25 +1,33 @@
 import random
 
-def generate_income(level):
-    # Base income (Level 1 - Easy)
-    data = {
-        "w2": random.randint(30000, 120000),
-        "interest": random.randint(0, 2000),
-        "dividend": random.randint(0, 1500)
+def generate_income():
+    return {
+        "wages": random.randint(30000, 100000),
+        "interest": random.randint(100, 2000),
+        "dividends": random.randint(500, 5000),
+        "business_income": random.randint(10000, 60000)
     }
 
-    # Level 2 - Medium complexity
-    if level in ["medium", "complex"]:
-        data["business"] = random.randint(5000, 40000)          # 1099-NEC
-        data["retirement"] = random.randint(0, 20000)           # 1099-R
-        data["unemployment"] = random.randint(0, 10000)
 
-    # Level 3 - Complex
-    if level == "complex":
-        data["capital_gain"] = random.randint(-2000, 8000)      # 1099-B
-        data["rental"] = random.randint(2000, 15000)            # Schedule E
-        data["k1_income"] = random.randint(1000, 5000)          # K-1
-        data["foreign_income"] = random.randint(0, 10000)
-        data["mortgage_interest"] = random.randint(1000, 5000)  # 1098
+def calculate_income(income):
+    total_income = (
+        income["wages"]
+        + income["interest"]
+        + income["dividends"]
+        + income["business_income"]
+    )
 
-    return data
+    adjustments = random.randint(1000, 5000)
+    agi = total_income - adjustments
+
+    standard_deduction = 29200
+    taxable_income = agi - standard_deduction
+
+    return {
+        **income,
+        "total_income": total_income,
+        "adjustments": adjustments,
+        "agi": agi,
+        "standard_deduction": standard_deduction,
+        "taxable_income": taxable_income
+    }

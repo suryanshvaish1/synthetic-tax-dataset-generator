@@ -1,15 +1,20 @@
-from reportlab.pdfgen import canvas
+def build_schedule_c():
+    from reportlab.platypus import Table
+    from reportlab.lib import colors
+    from reportlab.platypus import TableStyle
 
-def create_schedule_c(path, income):
-    c = canvas.Canvas(path)
+    data = [
+        ["Schedule C", "Profit or Loss from Business"],
+        ["Business Name", "Johnson Creative Studios"],
+        ["Income", "80000"],
+        ["Expenses", "37300"],
+        ["Net Profit", "42700"]
+    ]
 
-    business = income.get("business", 0)
+    table = Table(data)
 
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(150, 780, "Schedule C - Business Income")
+    table.setStyle(TableStyle([
+        ("GRID", (0,0), (-1,-1), 1, colors.black)
+    ]))
 
-    c.drawString(100, 720, f"Business Income: ${business}")
-    c.drawString(100, 700, f"Expenses: ${round(business * 0.3, 2)}")
-    c.drawString(100, 680, f"Net Profit: ${round(business * 0.7, 2)}")
-
-    c.save()
+    return [table]
